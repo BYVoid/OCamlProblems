@@ -23,8 +23,15 @@ let rec hbal_tree height =
   else
     let sub1 = hbal_tree (height - 1) in
     let sub2 = hbal_tree (height - 2) in
-    cons sub2 sub1 (cons sub1 sub2 [])
+    let acc = cons sub1 sub1 [] in
+    let acc = cons sub1 sub2 acc in
+    let acc = cons sub2 sub1 acc in
+    acc
 
 let () =
-  if hbal_tree 3 = [Node ('x', Node ('x', Empty, Empty), Node ('x', Node ('x', Empty, Empty), Empty)); Node ('x', Node ('x', Empty, Empty), Node ('x', Empty, Node ('x', Empty, Empty))); Node ('x', Node ('x', Node ('x', Empty, Empty), Empty), Node ('x', Empty, Empty)); Node ('x', Node ('x', Empty, Node ('x', Empty, Empty)), Node ('x', Empty, Empty))] then
+  let x = 'x' in
+  if hbal_tree 3 = [Node (x, Node (x, Empty, Empty), Node (x, Node (x, Empty, Empty), Node (x, Empty, Empty)));                             Node (x, Node (x, Empty, Empty), Node (x, Node (x, Empty, Empty), Empty));                                              Node (x, Node (x, Empty, Empty), Node (x, Empty, Node (x, Empty, Empty)));                                              Node (x, Node (x, Node (x, Empty, Empty), Node (x, Empty, Empty)), Node (x, Empty, Empty));                             Node (x, Node (x, Node (x, Empty, Empty), Empty), Node (x, Empty, Empty));                                              Node (x, Node (x, Empty, Node (x, Empty, Empty)), Node (x, Empty, Empty));                                              Node (x, Node (x, Node (x, Empty, Empty), Node (x, Empty, Empty)),                                                       Node (x, Node (x, Empty, Empty), Node (x, Empty, Empty)));                                                             Node (x, Node (x, Node (x, Empty, Empty), Node (x, Empty, Empty)), Node (x, Node (x, Empty, Empty), Empty));            Node (x, Node (x, Node (x, Empty, Empty), Node (x, Empty, Empty)), Node (x, Empty, Node (x, Empty, Empty)));            Node (x, Node (x, Node (x, Empty, Empty), Empty), Node (x, Node (x, Empty, Empty), Node (x, Empty, Empty)));            Node (x, Node (x, Node (x, Empty, Empty), Empty), Node (x, Node (x, Empty, Empty), Empty));                             Node (x, Node (x, Node (x, Empty, Empty), Empty), Node (x, Empty, Node (x, Empty, Empty)));                            
+ Node (x, Node (x, Empty, Node (x, Empty, Empty)), Node (x, Node (x, Empty, Empty), Node (x, Empty, Empty)));
+ Node (x, Node (x, Empty, Node (x, Empty, Empty)), Node (x, Node (x, Empty, Empty), Empty));
+ Node (x, Node (x, Empty, Node (x, Empty, Empty)), Node (x, Empty, Node (x, Empty, Empty)))] then
     Printf.printf "Yes\n"
