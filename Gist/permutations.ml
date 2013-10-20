@@ -8,7 +8,7 @@ let rec insert_every elem lst : 'a list list =
     (elem :: lst) ::
       (* Insert elem to tail and prepend head in the front *)
       (List.map (insert_every elem tail)
-        ~f:(fun lst -> head :: lst))
+         ~f:(fun lst -> head :: lst))
 
 let rec permutations lst : 'a list list =
   match lst with
