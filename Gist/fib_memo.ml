@@ -26,7 +26,14 @@ let memo_rec f_norec x =
   fref := f;
   f x
 
+let lazy_memo_rec f_norec x =
+  let rec f = lazy (memoize (fun x ->
+      f_norec (Lazy.force f) x))
+  in
+  (Lazy.force f) x
+
 let fib = memo_rec fib_norec
+let fib2 = lazy_memo_rec fib_norec
 
 let time f =
   let start = Time.now () in
@@ -36,4 +43,5 @@ let time f =
   x
 
 let () =
-  ignore (time (fun () -> fib 40))
+  ignore (time (fun () -> fib 40));
+  ignore (time (fun () -> fib2 40))
