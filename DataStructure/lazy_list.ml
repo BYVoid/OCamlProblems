@@ -8,6 +8,11 @@ let rec from (n : int) : int stream =
 
 let naturals = from 0
 
+let empty = Nil
+
+let cons head tail =
+  Cons (head, tail)
+
 (* head of a stream *)
 let hd (llst : 'a stream) : 'a =
   match llst with
@@ -33,6 +38,20 @@ let of_list (lst : 'a list) : 'a stream =
       Cons (head, lazy acc)
     ) Nil (List.rev lst)
 
+let rec append (llst1 : 'a stream) (llst2 : 'a stream) =
+  match llst1 with
+  | Nil -> llst2
+  | Cons (head, tail) ->
+    Cons (head, lazy (
+        append (Lazy.force tail) llst2
+      ))
+
+let concat (llsts : 'a stream list) : 'a stream =
+  List.fold_left (fun acc llst ->
+      append acc llst
+    ) Nil llsts
+
+
 (* make a list from the first n elements of a stream *)
 let take (llst : 'a stream) (n : int) : 'a list =
   let rec take_impl llst n acc =
@@ -54,6 +73,14 @@ let fold_left (llst : 'a stream) ~(init : 'b) ~(f : 'b -> 'a -> 'b) : 'b =
   in
   fold_left_impl llst init
 
+let to_list (llst : 'a stream) =
+  fold_left llst ~init: [] ~f: (fun acc elem ->
+      elem :: acc
+    )
+
+let rev (llst : 'a stream) : 'a stream =
+  of_list (List.rev (to_list llst))
+
 let rec filter (f : 'a -> bool) (s : 'a stream) : 'a stream =
   match s with
   | Nil -> Nil
@@ -72,8 +99,8 @@ let rec map2 (f: 'a -> 'b -> 'c)
   | _ -> failwith "map2"
 
 let () =
-  let llst : int stream = of_list [1;5;6;8;3;2] in
-  let lst : int list = take llst 5 in
+  let llst : int stream = append (of_list [1;5;6;8;3;2]) (of_list [1;5;6;8;3;2]) in
+  let lst : int list = take llst 9 in
   List.iter (fun elem -> Printf.printf "%d " elem) lst
 
 (*

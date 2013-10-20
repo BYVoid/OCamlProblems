@@ -18,4 +18,5 @@ let () =
   Printf.printf "%d\n" (fib 5);
   fib_cps 5 (fun res ->
     Printf.printf "%d\n" res
-  )
+  );
+  Printf.printf "%d\n" (fib_cps 5 (fun res -> res))
